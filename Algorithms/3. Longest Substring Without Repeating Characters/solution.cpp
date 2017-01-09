@@ -11,24 +11,21 @@
 #include <cstring>
 using namespace std;
 
+// 滑动窗口
+
 class Solution {
 	public:
 		int lengthOfLongestSubstring(string s) {
 			bool exist[256];
+			memset(exist, 0, sizeof(exist));
+			size_t i = 0, j = 0;
 			int maxlen = 0;
-			for(size_t i = 0; i<s.length(); ++i) {
-				memset(exist, 0, sizeof(exist));
-				exist[int(s[i])] = true;
-				size_t j;
-				for(j = i+1; j<s.length(); ++j) {
-					if(exist[int(s[j])]) {
-						maxlen = max(maxlen, int(j-i));
-						break;
-					}
-					exist[int(s[j])] = true;
-				}
-				if(j == s.length())
-					maxlen = max(maxlen, int(j-i));
+			while(i < s.length() && j < s.length()) {
+				if(exist[int(s[j])])
+					exist[int(s[i++])] = false;
+				else
+					exist[int(s[j++])] = true;
+				maxlen = max(maxlen, int(j-i));
 			}
 			return maxlen;
 		}
@@ -37,7 +34,7 @@ class Solution {
 
 int main() {
 	Solution s;
-	cout << s.lengthOfLongestSubstring("au") << endl;
+	cout << s.lengthOfLongestSubstring("abswa") << endl;
 
 	return 0;
 }
