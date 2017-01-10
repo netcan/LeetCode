@@ -26,7 +26,6 @@ class Solution {
 					if(ans.length() < sub.length()) ans = sub;
 				}
 			}
-
 			return ans;
 		}
 };
