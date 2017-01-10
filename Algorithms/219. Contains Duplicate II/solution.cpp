@@ -9,19 +9,16 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <set>
+#include <unordered_map>
 using namespace std;
 
 class Solution {
 	public:
 		bool containsNearbyDuplicate(vector<int>& nums, int k) {
-			k = min(k, int(nums.size()) - 1);
-			if(k <= 0) return false;
-			set<int> s;
+			unordered_map<int,int> hash;
 			for (int i = 0; i < nums.size(); ++i) {
-				if(i > k) s.erase(nums[i-k-1]);
-				if(s.find(nums[i]) != s.end()) return true;
-				s.insert(nums[i]);
+				if(hash.count(nums[i]) && abs(i - hash[nums[i]]) <= k) return true;
+				hash[nums[i]] = i;
 			}
 			return false;
 		}
