@@ -10,39 +10,30 @@
 #include <vector>
 #include <queue>
 using namespace std;
-
-struct jumpStat {
-	int pos; // 当前位置
-	int step; // 当前步数
-	friend bool operator<(const jumpStat&a, const jumpStat &b) {
-		return a.pos < b.pos;
-	}
-	jumpStat(int pos, int step): pos(pos), step(step) {}
-};
-
 class Solution {
 	public:
 		int jump(vector<int>& nums) {
-			int ans = 0;
+			int step = 0;
 			int N = nums.size();
-			if(nums.empty()) return ans;
-
-			priority_queue<jumpStat> q;
-			q.push(jumpStat(0, 0));
+			if(nums.empty() || N < 2) return step;
+			int curMaxStep = 0;
+			int nextMaxStep = 0;
 			int i = 0;
-			while(q.size()) {
-				jumpStat p = q.top();
-				q.pop();
-				if(p.pos >= N - 1) return p.step;
-				// printf("pos:%d step:%d\n", p.pos, p.step);
-				for(; i<=p.pos; ++i) {
-					q.push(jumpStat(i + nums[i], p.step + 1));
+			while(curMaxStep - i + 1 > 0) {
+				++step; // 下一步
+				for (; i<= curMaxStep; i++) {
+					nextMaxStep = max(nextMaxStep, nums[i] + i);
+					if(nextMaxStep >= N-1) return step;
 				}
+				curMaxStep = nextMaxStep;
 			}
-			return ans;
+
+
+			return step;
 		}
 
 };
+
 
 int main() {
 	Solution s;
