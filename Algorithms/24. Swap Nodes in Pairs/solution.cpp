@@ -19,24 +19,20 @@ struct ListNode {
 
 class Solution {
 	public:
-		// 删除倒数第n个节点，只要维护2个指针，间隔为n+1，当另一个指针到达末尾即可
-		ListNode* removeNthFromEnd(ListNode* head, int n) {
-			if(head == NULL) return NULL;
-			ListNode **first = &head, *second = head;
-			int i;
-			for(i=0; i<n && second; ++i) second = second->next;
-			if(i < n || *first == second) return head;
+		ListNode* swapPairs(ListNode* head) {
+			if(head == NULL || head->next == NULL) return head;
+			ListNode *newHead = new ListNode(0), *p = newHead;
+			newHead->next = head;
+			while(p && p->next && p->next->next) {
+				ListNode *t = p->next, *tt = t->next->next;
 
-			while(second) {
-				first = &(*first)->next;
-				second = second->next;
+				p->next = t->next;
+				t->next->next = t;
+				t->next = tt;
+
+				p = t;
 			}
-			if((*first)->next)
-				**first = *(*first)->next; // 删除当前节点
-			else *first = NULL;
-
-
-			return head;
+			return newHead->next;
 		}
 };
 
